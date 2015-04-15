@@ -1,12 +1,12 @@
 # Jinni
 
+unconventional genetics, aggressively metaprogrammed
+
 ## Installation
 
 Add this line to your application's Gemfile:
 
-```ruby
-gem 'jinni'
-```
+    gem 'jinni'
 
 And then execute:
 
@@ -16,38 +16,39 @@ Or install it yourself as:
 
     $ gem install jinni
 
+
 ## Usage
 
-### have some objects
+### Start with some objects
 
     class Fish < Jinni::Creature
-        attr_genetic :hunger 0 10
-        attr_genetic :speed 0 10
+        # attr_genetic name, min, max
+        attr_genetic :pointiness, 0, 1
+        attr_genetic :mass_in_kilos, 10, 100
+        attr_genetic :speed_in_knots, 8, 12
 
-        def initialize
-            @hunger = random(10)
-            @speed = random(10)
-        end
-
+        # must return a fixnum
         def fitness
-            @hunger + @speed / 2.0
+            @pointiness + ( @speed_in_knots / @mass_in_kilos )
         end
     end
 
     fishes = []
-    10.times { fishes.push(Fish.new) }
+    10.times { fishes.push(Fish.random_new) } # `random_new` respects min and max
 
-### set up a genepool
+### Have an offspring
 
-    genepool = Jinni.new(fishes)
+    bill = fishes[0]
+    ted = fishes[1]
 
-### Start a new generation
+    child = bill << tedd
 
-    baby = genepool.generate(fishes)
-    fishes.push(baby)
+### Start a whole new generation
 
+    generation = Jinni.generate_from fishes
+    fishes << generation
 
-## Development
+### todo: something mutations something
 
 
 ## Contributing
