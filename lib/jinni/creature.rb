@@ -1,4 +1,3 @@
-
 module Jinni
   class Creature
     attr_reader :genes
@@ -19,7 +18,19 @@ module Jinni
     # usage:
     # child = bill << ted
     def cross(object)
-      object # should be a cross of `self` with `object`
+      binary_one = self.to_binary
+      binary_two = object.to_binary
+
+      raise "uh oh" if binary_one.length != binary_two.length
+
+      crossover_point = rand(binary_one.length)
+
+      output_one = binary_one[0..crossover_point - 1] << binary_two[crossover_point..-1]
+      output_two = binary_two[0..crossover_point - 1] << binary_one[crossover_point..-1]
+
+      binary = rand(1) == 1 ? output_one : output_two
+
+      Fish.new_from_binary(binary)
     end
     alias :<< :cross
 
@@ -36,6 +47,14 @@ module Jinni
 
     private
 
+    # generic initialize from hash, called by the others
+    def initialize(hash)
+      puts hash
+      hash.each_pair do |gene, value|
+        instance_variable_set( "@#{gene}", value )
+      end
+    end
+
     # used internally by ::new_random, a la #initialize
     def initialize_randomly(*args, &block)
       params = Hash.new
@@ -50,13 +69,6 @@ module Jinni
     def initialize_from_binary(binary)
       hash = hash_from_binary(binary)
       initialize(hash)
-    end
-
-    def initialize(hash)
-      puts hash
-      hash.each_pair do |gene, value|
-        instance_variable_set( "@#{gene}", value )
-      end
     end
 
     def hash_from_binary(binary)
