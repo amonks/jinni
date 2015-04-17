@@ -41,14 +41,16 @@ Or install it yourself as:
     bill = fishes[0]
     ted = fishes[1]
 
-    child = bill << tedd
+    child = bill << ted
 
-### Start a whole new generation
+### ~~Start a whole new generation~~ lol not yet
+
+this here doesn't work:
 
     generation = Jinni.generate_from fishes
     fishes << generation
 
-### todo: something mutations something
+### todo: something mutations something, also make it faster
 
 
 ## Contributing
