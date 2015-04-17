@@ -1,4 +1,4 @@
-# Jinni [![https://rubygems.org/gems/jinni](https://img.shields.io/gem/v/jinni.svg?style=plastic)]()
+# Jinni [![Gem](https://img.shields.io/gem/v/jinni.svg?style=plastic)](https://rubygems.org/gems/jinni)
 
 unconventional genetics, aggressively metaprogrammed
 
