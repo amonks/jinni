@@ -1,26 +1,30 @@
 require 'pry'
 
-require 'jinni/version'
-require 'jinni/creature'
-require 'jinni/eigenclass'
-require 'jinni/numeric'
-
-
-
-
+require_relative 'jinni/version'
+require_relative 'jinni/creature'
+require_relative 'jinni/eigenclass'
+require_relative 'jinni/numeric'
+require_relative 'jinni/genepool'
 
 class Fish < Jinni::Creature
-  attr_genetic :hunger, -10, 10
-  attr_genetic :speed, 1, 100
-  attr_genetic :size, 90, 100
-  attr_genetic :pointiness, 50, 100
+  # attr_genetic name, min, max
+  attr_genetic :pointiness, 0, 2
+  attr_genetic :mass_in_kilos, 10, 100
+  attr_genetic :speed_in_knots, 8, 12
 
-  set_schema
+  # must return a fixnum
+  def fitness
+     @pointiness.to_f * (@speed_in_knots.to_f / @mass_in_kilos.to_f )
+  end
 end
 
-bill = Fish.random_new()
-ted = Fish.random_new()
+fishes = Genepool.new
+100.times { fishes << Fish.random_new } # `random_new` respects min and max
 
-child = bill.cross(ted)
+newGen = fishes.generate(1000)
 
 binding.pry
+
+puts 'end'
+
+

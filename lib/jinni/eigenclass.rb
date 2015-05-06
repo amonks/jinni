@@ -26,7 +26,7 @@ module Jinni
 
       # use like attr_accessor
       def attr_genetic( gene, min, max )
-        range = max - min
+        range = max - min + 1
 
         @@genes[gene] = range
 

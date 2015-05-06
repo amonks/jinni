@@ -14,6 +14,12 @@ module Jinni
       @@genes
     end
 
+    def mutate(rate = 0.01)
+      binary = self.to_binary
+      newBinary = binary.chars.map { |bit| bit == "0" ? "1" : "0" if rand < rate }
+      return self.class.new_from_binary newBinary
+    end
+
     # this is Where It Happens
     # usage:
     # child = bill << ted
@@ -49,7 +55,6 @@ module Jinni
 
     # generic initialize from hash, called by the others
     def initialize(hash)
-      puts hash
       hash.each_pair do |gene, value|
         instance_variable_set( "@#{gene}", value )
       end
@@ -76,12 +81,12 @@ module Jinni
       start = 0
       @@genes.each_pair do |gene, range|
         binary_chunk = binary[start..(start = start + range.bits - 1)]
+        break if binary_chunk.class != String
         offset = binary_chunk.to_i(2)
         value = self.class.send("#{gene}_min") + offset
         start += 1
         params[gene] = value
       end
-      puts params
       params
     end
 
