@@ -36,7 +36,7 @@ module Jinni
 
       binary = rand(1) == 1 ? output_one : output_two
 
-      Fish.new_from_binary(binary)
+      initialize_from_binary(binary)
     end
     alias :<< :cross
 

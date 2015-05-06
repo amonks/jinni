@@ -57,8 +57,6 @@ Or install it yourself as:
     generation = fishes.generate(10)
     fishes << generation
 
-### todo: something mutations something, also make it faster
-
 ## API
 
 ### creatures : instance
