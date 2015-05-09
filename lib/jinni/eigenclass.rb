@@ -1,6 +1,6 @@
 module Jinni
   class Creature
-    # genetic eigenclass methods
+    # creature class methods
     class << self
 
       # use after calling all attr_genetics

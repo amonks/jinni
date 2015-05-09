@@ -1,4 +1,6 @@
 module Jinni
+  # creature instacce methods
+
   class Creature
     attr_reader :genes
 
@@ -14,13 +16,14 @@ module Jinni
       @@genes
     end
 
+    # method to return a possibly mutated version of a given object
     def mutate(rate = 0.01)
       binary = self.to_binary
       newBinary = binary.chars.map { |bit| bit == "0" ? "1" : "0" if rand < rate }
       return self.class.new_from_binary newBinary
     end
 
-    # this is Where It Happens
+    # method to cross two creatures. returns a child
     # usage:
     # child = bill << ted
     def cross(object)
@@ -53,7 +56,7 @@ module Jinni
 
     private
 
-    # generic initialize from hash, called by the others
+    # generic initialize from hash, called by the other initializers
     def initialize(hash)
       hash.each_pair do |gene, value|
         instance_variable_set( "@#{gene}", value )
@@ -76,6 +79,7 @@ module Jinni
       initialize(hash)
     end
 
+    # method to return a creature attributes hash from a given binary string
     def hash_from_binary(binary)
       params = Hash.new
       start = 0
