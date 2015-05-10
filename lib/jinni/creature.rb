@@ -4,7 +4,8 @@ module Jinni
   class Creature
     attr_reader :genes
 
-    @@genes = Hash.new
+    # move this into the specific creature class, not the generic Creature
+    # @@genes = Hash.new
 
     # redefine this method in your class
     def fitness
@@ -45,7 +46,7 @@ module Jinni
 
     # serialize object into binary, according to schema laid out in eigenclass
     def to_binary
-      @@genes.collect {|gene, range|
+      self.class.genes.collect {|gene, range|
         output = String.new
         value = self.send(gene) - self.class.send("#{gene}_min")
         difference = range.bits - value.bits
@@ -66,7 +67,7 @@ module Jinni
     # used internally by ::new_random, a la #initialize
     def initialize_randomly(*args, &block)
       params = Hash.new
-      @@genes.each_pair do |gene, range|
+      self.class.genes.each_pair do |gene, range|
         value = self.class.send("#{gene}_min") + rand(range)
         params[gene] = value
       end
@@ -83,7 +84,7 @@ module Jinni
     def hash_from_binary(binary)
       params = Hash.new
       start = 0
-      @@genes.each_pair do |gene, range|
+      self.class.genes.each_pair do |gene, range|
         binary_chunk = binary[start..(start = start + range.bits - 1)]
         break if binary_chunk.class != String
         offset = binary_chunk.to_i(2)

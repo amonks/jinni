@@ -1,13 +1,19 @@
 module Jinni
   class Creature
+
+    def self.inherited(subclass)
+      subclass.class_variable_set("@@genes", Hash.new)
+      # create a class variable called @@genes in subclass
+      # create getter and setter methods for @@genes
+    end
+
     # creature class methods
     class << self
-
-      # use after calling all attr_genetics
-      def set_schema
-        total = @@genes.values.reduce( :+ )
-        @@schema_total = total
-      end
+      # # use after calling all attr_genetics
+      # def set_schema
+      #   total = @@genes.values.reduce( :+ )
+      #   @@schema_total = total
+      # end
 
       # to be used like `Klass.new()`
       def random_new(*args, &block)
@@ -23,12 +29,21 @@ module Jinni
         obj
       end
 
+      def genes
+        class_variable_get "@@genes"
+      end
+
+      def genes= genes
+        class_variable_set "@@genes", genes
+      end
+
 
       # use like attr_accessor
       def attr_genetic( gene, min, max )
         range = max - min + 1
 
-        @@genes[gene] = range
+        # update @@genes within (Fish)
+        self.genes[gene] = range
 
         # getter
         define_method(gene) do
