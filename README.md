@@ -42,7 +42,7 @@ Or install it yourself as:
 
 ### Put some creatures in a genepool
 
-    fishes = Genepool.new
+    fishes = Jinni::Genepool.new
     10.times { fishes.push(Fish.random_new) } # `random_new` respects min and max
 
 ### have some more offspring

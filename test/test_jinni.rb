@@ -19,11 +19,13 @@ class TestJinni < Minitest::Test
     end
   end
 
-  def test_it_creates_random_members_of_a_class_which_are_different
+  def test_it_creates_random_members_of_a_class_correctly
     require_relative 'creatures/fish'
     bill = Fish.random_new
     ted = Fish.random_new
     assert bill != ted
+    assert bill.class == Fish
+    assert ted.class == Fish
   end
 
   def test_it_creates_a_random_member_of_a_class_with_negative_attribute_minima
@@ -31,11 +33,66 @@ class TestJinni < Minitest::Test
     house = Building.random_new
   end
 
-  def test_it_crosses_two_random_members_of_a_class_without_errors
+  def test_it_crosses_two_random_members_of_a_class_correctly
     require_relative 'creatures/fish'
     bill = Fish.random_new
     ted = Fish.random_new
-    bill << ted
+    assert (bill << ted).class == Fish
   end
 
+  def test_it_can_generate_new_generations_from_a_genepool_correctly
+    genepool = create_and_fill_genepool(:building, 100)
+    assert genepool.length == 100
+    generation = genepool.generate(10)
+    assert generation.class == Jinni::Genepool
+    generation.each do |creature|
+      assert creature.class == Building
+    end
+  end
+
+  def test_it_can_find_the_average_fitness_of_a_genepool
+    genepool = create_and_fill_genepool(:building, 100)
+    assert genepool.average(:x_coord)
+    assert genepool.average
+  end
+
+  def test_fitness_usually_improves_between_generations
+    genepool_fitness = 0
+    evolved_fitness = 0
+    10.times do
+      genepool = create_and_fill_genepool(:building, 100)
+      evolved = genepool.generate(100)
+
+      genepool_fitness += genepool.average
+      evolved_fitness += evolved.average
+    end
+    assert evolved_fitness > genepool_fitness
+  end
+
+  def test_it_can_create_a_creature_from_any_random_binary_string
+    require_relative "creatures/fish"
+    require_relative "creatures/building"
+
+    100.times do |t|
+      string = "0"
+      t.times do |l|
+        string << rand.to_s
+      end
+      assert (Fish.new_from_binary string).class == Fish
+      assert (Building.new_from_binary string).class == Building
+    end
+  end
+
+
+  private
+
+  def create_and_fill_genepool(creature, number)
+    require_relative "creatures/#{creature.to_s}"
+    genepool = Jinni::Genepool.new
+    number.times do
+      klass = Kernel.const_get creature.to_s.capitalize
+      genepool << klass.random_new
+    end
+    genepool
+  end
 end

@@ -40,7 +40,7 @@ module Jinni
 
       binary = rand(1) == 1 ? output_one : output_two
 
-      initialize_from_binary(binary)
+      self.class.new_from_binary(binary)
     end
     alias :<< :cross
 

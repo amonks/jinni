@@ -1,4 +1,4 @@
-class Genepool < Array
+class Jinni::Genepool < Array
   def roulette(n, quality = :fitness)
     scratch = self.clone
 
@@ -26,7 +26,7 @@ class Genepool < Array
 
     pool = scratch.roulette(n * 2, quality)
 
-    generation = Genepool.new
+    generation = Jinni::Genepool.new
 
     pool.each_slice(2) do |pair|
       child = pair[0] << pair[1]
