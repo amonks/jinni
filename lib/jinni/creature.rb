@@ -7,17 +7,21 @@ module Jinni
     # move this into the specific creature class, not the generic Creature
     # @@genes = Hash.new
 
-    # redefine this method in your class
+    # you should override this function with something sensible for your class.
+    # It returns `0.0` by default, but any float will do.
     def fitness
       0.0
     end
 
-    # getter for list of genes
+    # genes is a getter method that returns a hash with the genetic attributes
+    # available to your instance as keys, and the size of their range of values
+    # as values
     def genes
       @@genes
     end
 
-    # method to return a possibly mutated version of a given object
+    # mutate returns a slightly mutated object. Each bit in the original dna has
+    # a `rate` chance of flipping.
     def mutate(rate = 0.01)
       binary = self.to_binary
       newBinaryArray = binary.chars.map do |bit|
@@ -30,7 +34,8 @@ module Jinni
       return self.class.new_from_binary newBinary
     end
 
-    # method to cross two creatures. returns a child
+    # << is the basic method used to cross two objects. It splits the dna strands
+    # of the input objects into random chunks, and then they randomly swap.
     # usage:
     # child = bill << ted
     def cross(object)
@@ -50,7 +55,7 @@ module Jinni
     end
     alias :<< :cross
 
-    # serialize object into binary, according to schema laid out in eigenclass
+    # to_binary returns the binary dna strand that represents the given object.
     def to_binary
       self.class.genes.collect {|gene, range|
         output = String.new

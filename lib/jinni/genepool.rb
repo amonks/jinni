@@ -1,4 +1,8 @@
 class Jinni::Genepool < Array
+
+  # this utility method uses weighted roulette wheel selection to
+  # choose `n` objects from your gene pool influenced by fitness.
+  # It does not cross them.
   def roulette(n, quality = :fitness)
     scratch = self.clone
 
@@ -21,6 +25,10 @@ class Jinni::Genepool < Array
     return selected
   end
 
+  # use this method to create a new generation of `n` creatures based
+  # on a genepool. it uses weighted roulette wheel selection to simulate
+  # the effects of genetic fitness, then crosses the selected objects
+  # together.
   def generate(n, mutationRate = 0.01, quality = :fitness)
     scratch = self.clone
 
@@ -37,6 +45,8 @@ class Jinni::Genepool < Array
     return generation
   end
 
+  # this method returns the mean of one quality through a collection of objects.
+  # It's very useful for watching your generations increase in fitness.
   def average(quality = :fitness)
     self.map {|f| f.send(quality)}.inject{ |sum, n| sum + n }.to_f / self.length
   end

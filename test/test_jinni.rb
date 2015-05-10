@@ -95,7 +95,9 @@ class TestJinni < Minitest::Test
     ted = bill.mutate(1)
     assert ted.class == Fish
     assert ted != bill
-    assert ted.fitness != bill.fitness
+    assert ted.scales != bill.scales
+    assert ted.fins != bill.fins
+    assert ted.weight != bill.weight
   end
 
 

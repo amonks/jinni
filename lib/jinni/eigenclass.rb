@@ -15,14 +15,17 @@ module Jinni
       #   @@schema_total = total
       # end
 
-      # to be used like `Klass.new()`
-      def random_new(*args, &block)
+      # random_new initializes an object with attributes randomly
+      # assigned from within your declared range.
+      def new_randomly(*args, &block)
         obj = allocate
         obj.send(:initialize_randomly, *args, &block)
         obj
       end
+      alias :random_new :new_randomly
 
-      # to be used by `cross`, `Klass.new_from_binary(binary_string)`
+      # use this method to initialize an object from an arbitrary binary string.
+      # it's used internally by the cross method.
       def new_from_binary(*args, &block)
         obj = allocate
         obj.send(:initialize_from_binary, *args, &block)
@@ -39,13 +42,14 @@ module Jinni
         class_variable_set "@@genes", genes
       end
 
-      # the required length of a binary string to generate a creature of this class
+      # returns required length of a binary string to generate a creature of this class
       def genetic_bits
         genes.values.map {|range| range.bits}.reduce(:+)
       end
 
 
-      # use like attr_accessor
+      # use this method in your class to declare your genetic attributes.
+      # use it how you would attr_accessor
       def attr_genetic( gene, min, max )
         range = max - min + 1
 
