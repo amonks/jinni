@@ -20,7 +20,13 @@ module Jinni
     # method to return a possibly mutated version of a given object
     def mutate(rate = 0.01)
       binary = self.to_binary
-      newBinary = binary.chars.map { |bit| bit == "0" ? "1" : "0" if rand < rate }
+      newBinaryArray = binary.chars.map do |bit|
+        if rand < rate
+          bit = (bit == "0" ? "1" : "0")
+        end
+        bit
+      end
+      newBinary = newBinaryArray.join
       return self.class.new_from_binary newBinary
     end
 
@@ -76,6 +82,14 @@ module Jinni
 
     # used internally by ::new_from_binary, a la #initialize
     def initialize_from_binary(binary)
+      # correct for broken method somewhere that sends array instead of string
+      binary = binary.join if binary.class == Array
+
+      raise "no binary string!!" unless binary.to_i(2) > 0
+      until binary.length >= self.class.genetic_bits
+        binary << binary
+      end
+
       hash = hash_from_binary(binary)
       initialize(hash)
     end

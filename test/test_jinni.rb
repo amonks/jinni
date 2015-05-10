@@ -42,8 +42,8 @@ class TestJinni < Minitest::Test
 
   def test_it_can_generate_new_generations_from_a_genepool_correctly
     genepool = create_and_fill_genepool(:building, 100)
-    assert genepool.length == 100
-    generation = genepool.generate(10)
+    generation = genepool.generate(100)
+
     assert generation.class == Jinni::Genepool
     generation.each do |creature|
       assert creature.class == Building
@@ -63,6 +63,7 @@ class TestJinni < Minitest::Test
       genepool = create_and_fill_genepool(:building, 100)
       evolved = genepool.generate(100)
 
+
       genepool_fitness += genepool.average
       evolved_fitness += evolved.average
     end
@@ -74,13 +75,27 @@ class TestJinni < Minitest::Test
     require_relative "creatures/building"
 
     100.times do |t|
-      string = "0"
+      string = "1"
       t.times do |l|
         string << rand.to_s
       end
-      assert (Fish.new_from_binary string).class == Fish
-      assert (Building.new_from_binary string).class == Building
+      newFish = Fish.new_from_binary string
+      newBuilding = Building.new_from_binary string
+      assert newFish.class == Fish
+      assert newBuilding.class == Building
+      assert newFish.fitness, "the new fish should have a fitness"
+      assert newBuilding.fitness, "the new building should have a fitness"
     end
+  end
+
+  def test_it_can_mutate_a_creature_correctly
+    require_relative 'creatures/fish'
+
+    bill = Fish.random_new
+    ted = bill.mutate(1)
+    assert ted.class == Fish
+    assert ted != bill
+    assert ted.fitness != bill.fitness
   end
 
 

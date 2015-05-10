@@ -30,7 +30,7 @@ class Jinni::Genepool < Array
 
     pool.each_slice(2) do |pair|
       child = pair[0] << pair[1]
-      # child = child.mutate if mutationRate > 0
+      (child = child.mutate) if mutationRate > 0
       generation << child
     end
 
