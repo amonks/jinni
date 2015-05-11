@@ -4,9 +4,6 @@ module Jinni
   class Creature
     attr_reader :genes
 
-    # move this into the specific creature class, not the generic Creature
-    # @@genes = Hash.new
-
     # you should override this function with something sensible for your class.
     # It returns `0.0` by default, but any float will do.
     def fitness
