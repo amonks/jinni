@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Andrew Monks"]
   spec.email         = ["a@monks.co"]
 
-  spec.summary       = %q{unconventional genetics, aggressively metaprogrammed [hideous code use at your own risk]}
+  spec.summary       = %q{unconventional genetics, aggressively metaprogrammed}
   spec.homepage      = "http://github.com/amonks/jinni"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
